@@ -14,4 +14,9 @@ class User{
     protected $hidden = [
         'password',
     ];
+
+    public int $id;
+    public string $email;
+    public string $password;
+    public string $role;
 }

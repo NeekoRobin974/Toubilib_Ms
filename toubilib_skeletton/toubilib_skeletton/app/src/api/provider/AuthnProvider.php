@@ -33,18 +33,37 @@ class AuthnProvider implements AuthnProviderInterface {
     }
 
     //Tente de connecter l'utilisateur avec ses identifiants
-    public function signin(string $email, string $password): bool {
+    public function signin(string $email, string $password): ?array{
         try {
             $user = $this->authnService->verifyCredentials($email, $password);
             //Stock les infos de l'utilisateur dans la session
             $_SESSION['id'] = $user->id;
             $_SESSION['email'] = $user->email;
             $_SESSION['role'] = $user->role;
-            return true;
+
+            $profil = new \toubilib\core\application\ports\api\dtos\ProfilDTO($user);
+            $accessToken = $this->generateAccessToken($user);
+            $refreshToken = $this->generateRefreshToken($user);
+
+            return [
+                'profil' => $profil,
+                'access_token' => $accessToken,
+                'refresh_token' => $refreshToken
+            ];
         } catch (\Exception $e) {
             error_log("Erreur de connexion: " . $e->getMessage());
-            return false;
+            return null;
         }
+    }
+
+    //Génère un token d'accès JWT
+    private function generateAccessToken(User $user): string {
+        return bin2hex(random_bytes(16));
+    }
+
+    //Génère un token de rafraîchissement
+    private function generateRefreshToken(User $user): string {
+        return bin2hex(random_bytes(32));
     }
 
     //Déconnecte l'utilisateur en supprimant ses infos de la session

@@ -11,7 +11,10 @@ use toubilib\api\actions\getAgendaPraticienAction;
 return function( \Slim\App $app):\Slim\App {
 
 
-
+    $app->add(new \toubilib\api\middlewares\CorsMiddleware());
+    $app->options('/{routes:.+}', function (Request $rq, Response $rs, array $args) : Response {
+        return $rs;
+    });
     $app->get('/', HomeAction::class);
     $app->get('/praticiens', \toubilib\api\actions\getAllPraticiensAction::class);
     $app->get('/praticiens/{id}/creneaux', \toubilib\api\actions\getCreneauxAction::class);
@@ -23,6 +26,7 @@ return function( \Slim\App $app):\Slim\App {
     $app->get('/praticien/{id}/{date_debut}/{date_fin}/agenda', getAgendaPraticienAction::class);
     $app->post('/rdvs/{id}/annuler', annulerRDVAction::class);
     $app->get('/patients/{id}', \toubilib\api\actions\getPatientDetailsAction::class);
+    $app->post('/auth/signin', \toubilib\api\actions\SigninAction::class);
 
     return $app;
 };
