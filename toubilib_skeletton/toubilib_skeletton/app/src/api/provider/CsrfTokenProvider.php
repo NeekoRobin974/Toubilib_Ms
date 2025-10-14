@@ -2,6 +2,8 @@
 namespace toubilib\api\provider;
 
 //Token CSRF pour sécuriser les formulaires
+use toubilib\api\provider\exceptions\CsrfTokenException;
+
 class CsrfTokenProvider {
     private const SESSION_KEY = '_csrf_token';
     private static ?string $currentToken = null;

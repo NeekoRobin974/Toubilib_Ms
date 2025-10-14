@@ -1,11 +1,11 @@
 <?php
 namespace toubilib\api\actions;
 
-use toubilib\api\provider\AuthnProviderInterface;
-use toubilib\api\provider\CsrfTokenProvider;
-use toubilib\api\provider\CsrfTokenException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use toubilib\api\provider\AuthnProviderInterface;
+use toubilib\api\provider\CsrfTokenProvider;
+use toubilib\api\provider\exceptions\CsrfTokenException;
 use toubilib\core\application\usecases\AuthnServiceInterface;
 
 class RegisterAction {
