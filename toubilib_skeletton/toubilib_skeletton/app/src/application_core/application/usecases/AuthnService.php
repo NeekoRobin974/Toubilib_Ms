@@ -1,20 +1,42 @@
 <?php
+
 namespace toubilib\core\application\usecases;
 
-use toubilib\core\application\ports\api\dtos\ProfilDTO;
-use toubilib\core\domain\entities\user\User;
+use toubilib\core\application\ports\spi\PraticienRepositoryInterface;
+use toubilib\core\application\usecases\exceptions\InsufficientRightsAuthzException;
+use toubilib\core\application\usecases\exceptions\InvalidRoleAuthzException;
+use toubilib\core\application\usecases\exceptions\NotOwnerAuthzException;
 
-//Service d'authentification pour la gestion des utilisateurs
-class AuthnService implements AuthnServiceInterface {
-    //Vérif des identifiants de l'utilisateur
-    public function verifyCredentials(string $email, string $password): ProfilDTO {
-        //Recherche l'utilisateur par email
-        $user = User::query()->where('email', $email)->first();
+class AuthzPraticienService {
+    const OPERATION_READ = 1;
+    const OPERATION_UPDATE = 2;
+    const OPERATION_DELETE = 100;
+    const OPERATION_CREATE = 4;
+    const OPERATION_LIST = 5;
+    const ROLE_PRATICIEN = 10;
+    const ROLE_ADMIN = 100;
 
-        //Vérif le mdr fourni avec le hash en base
-        if ($user && password_verify($password, $user->password)) {
-            return new ProfilDTO($user);
+    private ?PraticienRepositoryInterface $praticienRepository;
+
+    public function __construct(?PraticienRepositoryInterface $praticienRepository = null) {
+        $this->praticienRepository = $praticienRepository;
+    }
+
+    public function isGranted(
+        string $user_id,
+        int $role,
+        string $ressource_id,
+        int $operation = self::OPERATION_READ
+    ): bool {
+        if ($role < self::ROLE_PRATICIEN) {
+            throw new InvalidRoleAuthzException('Role invalide');
         }
-        throw new \Exception("Identifiants invalides");
+        if ($user_id !== $ressource_id) {
+            throw new NotOwnerAuthzException('Vous netes pas le bon praticien');
+        }
+        if ($operation === self::OPERATION_DELETE) {
+            throw new InsufficientRightsAuthzException('Droits insuffisants');
+        }
+        return true;
     }
 }
