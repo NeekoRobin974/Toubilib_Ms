@@ -1,8 +1,7 @@
 <?php
 namespace toubilib\api\provider;
 
-use toubilib\api\provider\AuthnProviderInterface;
-use toubilib\core\application\usecases\AuthnServiceInterface;
+use toubilib\core\application\ports\api\AuthnServiceInterface;
 use toubilib\core\domain\entities\user\User;
 
 //Fournisseur d'authentification pour la gestion des utilisateurs connectés
@@ -21,7 +20,7 @@ class AuthnProvider implements AuthnProviderInterface {
         if (!isset($_SESSION['id'])) {
             return null;
         }
-        return User::query()->find($_SESSION['id']);
+        return $this->authnService->getUserById($_SESSION['id']);
     }
 
     //Récup le role de l'utilisateur connecté
@@ -36,7 +35,7 @@ class AuthnProvider implements AuthnProviderInterface {
     public function signin(string $email, string $password): ?array{
         try {
             $user = $this->authnService->verifyCredentials($email, $password);
-            //Stock les infos de l'utilisateur dans la session
+            if (!$user) return null;
             $_SESSION['id'] = $user->id;
             $_SESSION['email'] = $user->email;
             $_SESSION['role'] = $user->role;

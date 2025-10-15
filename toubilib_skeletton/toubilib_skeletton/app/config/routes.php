@@ -26,7 +26,13 @@ return function( \Slim\App $app):\Slim\App {
     $app->get('/praticien/{id}/{date_debut}/{date_fin}/agenda', getAgendaPraticienAction::class);
     $app->post('/rdvs/{id}/annuler', annulerRDVAction::class);
     $app->get('/patients/{id}', \toubilib\api\actions\getPatientDetailsAction::class);
-    $app->post('/auth/signin', \toubilib\api\actions\SigninAction::class);
+    $app->post('/auth/signin', function ($request, $response, $args) use ($app) {
+        $container = $app->getContainer();
+        $authProvider = $container->get(\toubilib\api\provider\AuthnProviderInterface::class);
+        $action = new \toubilib\api\actions\SigninAction($authProvider);
+        return $action($request, $response, $args);
+    });
+
 
     return $app;
 };

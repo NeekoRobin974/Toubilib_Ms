@@ -2,17 +2,22 @@
 
 use toubilib\api\actions\annulerRDVAction;
 use toubilib\api\actions\creerRDVAction;
+use toubilib\api\actions\getAgendaPraticienAction;
+use toubilib\api\actions\getAllPraticiensAction;
 use toubilib\api\actions\getPatientDetailsAction;
 use toubilib\api\actions\getPraticienDetailsAction;
 use toubilib\api\actions\getRDVAction;
+use toubilib\api\provider\AuthnProviderInterface;
+use toubilib\core\application\ports\api\AuthnServiceInterface;
 use toubilib\core\application\ports\spi\PatientRepositoryInterface;
 use toubilib\core\application\ports\spi\PraticienRepositoryInterface;
 use toubilib\core\application\ports\spi\RDVRepositoryInterface;
+use toubilib\core\application\ports\spi\UserRepositoryInterface;
+use toubilib\core\application\usecases\AuthnService;
 use toubilib\core\application\usecases\ServiceRDV;
 use toubilib\infra\repositories\PDOPraticienRepository;
-use toubilib\api\actions\getAllPraticiensAction;
 use toubilib\infra\repositories\PDORdvRepository;
-use toubilib\api\actions\getAgendaPraticienAction;
+use toubilib\infra\repositories\PDOUserRepository;
 
 return [
     'pdo' => function($container) {
@@ -68,5 +73,16 @@ return [
     },
     getPatientDetailsAction::class => function($container) {
         return new getPatientDetailsAction($container->get(PatientRepositoryInterface::class));
+    },
+    AuthnProviderInterface::class => function($container) {
+        return new \toubilib\api\provider\AuthnProvider(
+            $container->get(\toubilib\core\application\ports\api\AuthnServiceInterface::class)
+        );
+    },
+    UserRepositoryInterface::class => function($container) {
+        return new PDOUserRepository($container->get('pdo'));
+    },
+    AuthnServiceInterface::class => function($container) {
+        return new AuthnService($container->get(UserRepositoryInterface::class));
     },
 ];

@@ -6,7 +6,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use toubilib\api\provider\AuthnProviderInterface;
 use toubilib\api\provider\CsrfTokenProvider;
 use toubilib\api\provider\exceptions\CsrfTokenException;
-use toubilib\core\application\usecases\AuthnServiceInterface;
+use toubilib\core\application\ports\api\AuthnServiceInterface;
 
 class RegisterAction {
     protected AuthnProviderInterface $authProvider;
