@@ -47,6 +47,7 @@ class AuthnMiddleware
         $profile = new ProfilDTO(
             id: $payload->sub,
             email: $payload->data->user,
+            role: $payload->data->roles
         );
 
         //ajoute le profil dans la requête pour l'action suivante

@@ -8,13 +8,19 @@ Consulter l'agenda d'un praticien apres date precisee: http://localhost:6080/pra
 Consulter l'agenda d'un praticien apres certaine date et avant certaine date: http://localhost:6080/praticien/4305f5e9-be5a-4ccf-8792-7e07d7017363/2025-12-01/2025-12-03/agenda
 Annuler un RDV (faire sur postman) : http://localhost:6080/rdvs/2e1a7275-2593-3c04-9a4c-4e7cbada9541/annuler
 Details d'un patient: http://localhost:6080/patients/98f45931-8b8e-34cb-950d-4e8937d70179
-Connexion : http://localhost:6080/auth/signin et ajouter ça dans body raw json
-{
-  "email": "Denis.Teixeira@hotmail.fr",
-  "password": "$2y$12$V21Au2EuL6LY5EZX3hBBwe2ScZhK4VSeC5yP1jd0eqausdWeTg5oO"
-}
 
-Pour le test, insérer un nouvel utilisateur car on connait pas les mdp en clair de ceux de la BD
-INSERT INTO users (id, email, password, role)
-VALUES (gen_random_uuid(), 'test@exemple.com', '$2y$12$sIIHdOnVpHiOXIYQaF6/3OUwTf/vGsFqQWTF6bZZ74v3BJHrMk5zG', 1);
-Mdp = test
+Inscription : http://localhost:6080/auth/signup et ajouter des infos dans body raw json
+{
+    "email": "test@exemple.com",
+    "password": "test",
+    "role": 1
+}
+Si les infos sont correctes, on obtient un 201 Created avec le body retourné
+
+Connexion : http://localhost:6080/auth/signin et ajouter des infos dans body raw json
+{
+    "email": "test@exemple.com",
+    "password": "test",
+    "role": 1
+}
+Si les infos sont correctes, on obient un 200 OK avec un token JWT dans le body retourné
