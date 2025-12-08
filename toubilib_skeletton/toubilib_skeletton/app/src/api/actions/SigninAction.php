@@ -1,51 +1,57 @@
 <?php
+
 namespace toubilib\api\actions;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use toubilib\api\provider\AuthnProviderInterface;
+use toubilib\core\application\ports\api\dtos\CredentialsDTO;
 
-class SigninAction{
-    protected AuthnProviderInterface $authProvider;
+class SigninAction {
+    public function __construct(
+        private readonly AuthnProviderInterface $authnProvider
+    )
+    {}
 
-    public function __construct(AuthnProviderInterface $authProvider){
-        $this->authProvider = $authProvider;
-    }
+    public function __invoke(Request $request, Response $response): Response{
+        try {
+            //recup des données
+            $data = $request->getParsedBody();
+            $email = $data['email'] ?? '';
+            $password = $data['password'] ?? '';
+            $role = isset($data['role']) ? (int)$data['role'] : 0;
 
-    public function __invoke(Request $request, Response $response, array $args): Response{
-        //Recupère email et mdp
-        $data = $request->getParsedBody();
-        $email = trim($data['email'] ?? '');
-        $password = $data['password'] ?? '';
+            //vérif des champs
+            if (($email==='') OR ($password==='')){
+                throw new \Exception("Email ou mot de passe non fourni");
+            }
+            $credentials = new CredentialsDTO($email, $password, $role);
+            //appelle le provider d'authentification pour vérifier les identifiants
+            $resSignIn = $this->authnProvider->signin($credentials);
 
-        //Validation des entrées
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || empty($password)) {
-            $responseData = ['error' => 'Email valide et mot de passe requis.'];
-            $response->getBody()->write(json_encode($responseData));
+            //recup le token et le profil utilisateur
+            $authDTO = $resSignIn[0];
+            $profile = $resSignIn[1];
+
+            //rep a renvoyer
+            $res = [
+                'token' => $authDTO->accesToken,
+                'profile' => $profile
+            ];
+
+            $contentType = $request->getHeaderLine('Content-Type');
+            if (str_contains($contentType, 'application/json')) {
+                $response->getBody()->write(json_encode($res, JSON_PRETTY_PRINT));
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+            } else {
+                $view = \Slim\Views\Twig::fromRequest($request);
+                return $view->render($response, 'connected.twig', $res);
+            }
+        }catch (\Exception $e){
+            $response->getBody()->write(json_encode([
+                'error' => $e->getMessage()
+            ]));
             return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
         }
-
-        //Tente de connecter l'utilisateur
-        $result = $this->authProvider->signin($email, $password);
-
-        //Si échec, retourne une erreur
-        if (!$result) {
-            $responseData = ['error' => 'Identifiants incorrects.'];
-            $response->getBody()->write(json_encode($responseData));
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
-        }
-
-        //Retourne le profil et les tokens
-        $responseData = [
-            'access_token' => $result['access_token'],
-            'refresh_token' => $result['refresh_token'],
-            'profil' => [
-                'id' => $result['profil']->id,
-                'email' => $result['profil']->email,
-                'role' => $result['profil']->role
-            ]
-        ];
-        $response->getBody()->write(json_encode($responseData));
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
     }
 }

@@ -8,16 +8,16 @@ use toubilib\api\actions\getPatientDetailsAction;
 use toubilib\api\actions\getPraticienDetailsAction;
 use toubilib\api\actions\getRDVAction;
 use toubilib\api\provider\AuthnProviderInterface;
-use toubilib\core\application\ports\api\AuthnServiceInterface;
+use toubilib\core\application\ports\api\ServiceUserInterface;
+use toubilib\core\application\ports\spi\AuthRepositoryInterface;
 use toubilib\core\application\ports\spi\PatientRepositoryInterface;
 use toubilib\core\application\ports\spi\PraticienRepositoryInterface;
 use toubilib\core\application\ports\spi\RDVRepositoryInterface;
-use toubilib\core\application\ports\spi\UserRepositoryInterface;
-use toubilib\core\application\usecases\AuthnService;
 use toubilib\core\application\usecases\ServiceRDV;
+use toubilib\core\application\usecases\ServiceUser;
+use toubilib\infra\repositories\PDOAuthRepository;
 use toubilib\infra\repositories\PDOPraticienRepository;
 use toubilib\infra\repositories\PDORdvRepository;
-use toubilib\infra\repositories\PDOUserRepository;
 
 return [
     'pdo' => function($container) {
@@ -30,6 +30,10 @@ return [
     },
     'pdo_patient' => function($container) {
         $settings = $container->get('settings')['db_patient'];
+        return new \PDO($settings['dsn'], $settings['user'], $settings['password']);
+    },
+    'pdo_auth' => function($container) {
+        $settings = $container->get('settings')['db_auth'];
         return new \PDO($settings['dsn'], $settings['user'], $settings['password']);
     },
     PraticienRepositoryInterface::class => function($container) {
@@ -74,15 +78,20 @@ return [
     getPatientDetailsAction::class => function($container) {
         return new getPatientDetailsAction($container->get(PatientRepositoryInterface::class));
     },
-    AuthnProviderInterface::class => function($container) {
-        return new \toubilib\api\provider\AuthnProvider(
-            $container->get(\toubilib\core\application\ports\api\AuthnServiceInterface::class)
+    'jwt_manager' => function($container) {
+        $settings = $container->get('settings')['jwt'];
+        return new \toubilib\api\provider\JWTManager($settings['key'], $settings['alg']);
+    },
+    \toubilib\api\provider\AuthnProviderInterface::class => function($container) {
+        return new \toubilib\api\provider\JWTAuthnProvider(
+            $container->get('jwt_manager'),
+            $container->get(\toubilib\core\application\ports\api\ServiceUserInterface::class)
         );
     },
-    UserRepositoryInterface::class => function($container) {
-        return new PDOUserRepository($container->get('pdo'));
+    \toubilib\core\application\ports\api\ServiceUserInterface::class => function($container) {
+        return new ServiceUser($container->get(AuthRepositoryInterface::class));
     },
-    AuthnServiceInterface::class => function($container) {
-        return new AuthnService($container->get(UserRepositoryInterface::class));
+    AuthRepositoryInterface::class => function($container) {
+        return new PDOAuthRepository($container->get('pdo_auth'));
     },
 ];

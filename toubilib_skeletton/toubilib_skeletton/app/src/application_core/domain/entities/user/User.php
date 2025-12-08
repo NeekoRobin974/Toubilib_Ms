@@ -1,22 +1,48 @@
 <?php
+
 namespace toubilib\core\domain\entities\user;
 
 class User{
-    protected $table = 'users';
-    protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'email',
-        'password',
-        'role'
-    ];
+    private string $id;
+    private string $email;
+    private string $password;
+    private int $role;
 
-    protected $hidden = [
-        'password',
-    ];
+    public function __construct(string $id, string $email, string $password, int $role){
+        $this->id = $id;
+        $this->email = $email;
+        $this->password = $password;
+        $this->role = $role;
+    }
 
-    public string $id;
-    public string $email;
-    public string $password;
-    public string $role;
+    /**
+     * @return string
+     */
+    public function getId(): string{
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRole(): int{
+        return $this->role;
+    }
 }

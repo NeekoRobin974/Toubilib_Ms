@@ -1,12 +1,13 @@
 <?php
 
-namespace toubilib\api\provider;
+namespace toubilib\core\application\ports\api;
 
 
 use toubilib\core\application\ports\api\dtos\CredentialsDTO;
 use toubilib\core\application\ports\api\dtos\ProfilDTO;
 
-interface AuthnProviderInterface {
+interface ServiceUserInterface{
+
     public function register(CredentialsDTO $credentials): ProfilDTO;
-    public function signin(CredentialsDTO $credentials): array;
+    public function byCredentials(CredentialsDTO $credentials): ?ProfilDTO;
 }
