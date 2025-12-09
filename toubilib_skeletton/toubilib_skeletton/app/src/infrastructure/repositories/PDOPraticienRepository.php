@@ -2,6 +2,8 @@
 namespace toubilib\infra\repositories;
 
 use toubilib\core\application\ports\spi\PraticienRepositoryInterface;
+use toubilib\core\domain\entities\praticien\MotifVisite;
+use toubilib\core\domain\entities\praticien\MoyenPaiement;
 use toubilib\core\domain\entities\praticien\Praticien;
 use toubilib\core\domain\entities\praticien\Specialite;
 
@@ -12,9 +14,23 @@ class PDOPraticienRepository implements PraticienRepositoryInterface{
         $this->pdo = $pdo;
     }
 
-    public function listerPraticiens(): array{
-        $stmt = $this->pdo->prepare('SELECT p.*, s.id as specialite_id, s.libelle as specialite_libelle, s.description as specialite_description FROM praticien p JOIN specialite s ON p.specialite_id = s.id');
-        $stmt->execute();
+    public function listerPraticiens(?string $specialite = null, ?string $ville = null): array{
+        $sql = 'SELECT p.*, s.id as specialite_id, s.libelle as specialite_libelle, s.description as specialite_description FROM praticien p JOIN specialite s ON p.specialite_id = s.id';
+        $params = [];
+        $conditions = [];
+        if ($specialite !== null) {
+            $conditions[] = 'LOWER(s.libelle) = LOWER(:specialite)';
+            $params['specialite'] = $specialite;
+        }
+        if ($ville !== null) {
+            $conditions[] = 'LOWER(p.ville) = LOWER(:ville)';
+            $params['ville'] = $ville;
+        }
+        if ($conditions) {
+            $sql .= ' WHERE ' . implode(' AND ', $conditions);
+        }
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
 
         $praticiens = [];
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)){
@@ -52,7 +68,7 @@ class PDOPraticienRepository implements PraticienRepositoryInterface{
         $stmtMotifs->execute(['id' => $id]);
         $motifs = [];
         while ($motif = $stmtMotifs->fetch(\PDO::FETCH_ASSOC)){
-            $motifs[] = new \toubilib\core\domain\entities\praticien\MotifVisite($motif['id'], $motif['libelle']);
+            $motifs[] = new MotifVisite($motif['id'], $motif['libelle']);
         }
 
         //Moyens de paiement
@@ -60,7 +76,7 @@ class PDOPraticienRepository implements PraticienRepositoryInterface{
         $stmtMoyens->execute(['id' => $id]);
         $moyens = [];
         while ($moyen = $stmtMoyens->fetch(\PDO::FETCH_ASSOC)){
-            $moyens[] = new \toubilib\core\domain\entities\praticien\MoyenPaiement($moyen['id'], $moyen['libelle']);
+            $moyens[] = new MoyenPaiement($moyen['id'], $moyen['libelle']);
         }
 
         //Affichage du praticien

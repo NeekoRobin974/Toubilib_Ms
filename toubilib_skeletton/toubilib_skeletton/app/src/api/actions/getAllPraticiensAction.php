@@ -14,7 +14,10 @@ class getAllPraticiensAction extends AbstractAction{
     }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface{
-        $praticiens = $this->servicePraticien->listerPraticiens();
+        $queryParams = $request->getQueryParams();
+        $specialite = $queryParams['specialite'] ?? null;
+        $ville = $queryParams['ville'] ?? null;
+        $praticiens = $this->servicePraticien->listerPraticiens($specialite, $ville);
         $praticiensArray = array_map(fn($p) => $p->toArray(), $praticiens);
         $response->getBody()->write(json_encode($praticiensArray));
         //200 ok
