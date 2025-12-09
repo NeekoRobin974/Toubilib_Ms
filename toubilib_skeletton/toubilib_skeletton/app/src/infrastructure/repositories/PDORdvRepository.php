@@ -91,4 +91,16 @@ class PDORdvRepository implements RDVRepositoryInterface
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
     }
+    public function getConsultationsHonorees(string $patientId): array
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT * FROM rdvs 
+         WHERE patient_id = :patient_id 
+         AND status = 1 
+         ORDER BY date_heure_debut DESC"
+        );
+        $stmt->execute(['patient_id' => $patientId]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
 }

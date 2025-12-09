@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use toubilib\api\actions\annulerRDVAction;
 use toubilib\api\actions\getAllPraticiensAction;
 use toubilib\api\actions\getAgendaPraticienAction;
+use toubilib\api\actions\GetHistoriqueConsultationsAction;
 
 
 return function( \Slim\App $app):\Slim\App {
@@ -25,6 +26,8 @@ return function( \Slim\App $app):\Slim\App {
     $app->get('/praticien/{id}/{date_debut}/agenda', getAgendaPraticienAction::class);
     $app->get('/praticien/{id}/{date_debut}/{date_fin}/agenda', getAgendaPraticienAction::class);
     $app->post('/rdvs/{id}/annuler', annulerRDVAction::class);
+    $app->get('/patients/consultations', GetHistoriqueConsultationsAction::class)
+        ->add(\toubilib\api\middlewares\AuthnMiddleware::class);
     $app->get('/patients/{id}', \toubilib\api\actions\getPatientDetailsAction::class);
     $app->post('/auth/signin', function ($request, $response, $args) use ($app) {
         $container = $app->getContainer();

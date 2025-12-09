@@ -4,10 +4,12 @@ use toubilib\api\actions\annulerRDVAction;
 use toubilib\api\actions\creerRDVAction;
 use toubilib\api\actions\getAgendaPraticienAction;
 use toubilib\api\actions\getAllPraticiensAction;
+use toubilib\api\actions\GetHistoriqueConsultationsAction;
 use toubilib\api\actions\getPatientDetailsAction;
 use toubilib\api\actions\getPraticienDetailsAction;
 use toubilib\api\actions\getRDVAction;
 use toubilib\api\provider\AuthnProviderInterface;
+use toubilib\core\application\ports\api\ServiceRDVInterface;
 use toubilib\core\application\ports\api\ServiceUserInterface;
 use toubilib\core\application\ports\spi\AuthRepositoryInterface;
 use toubilib\core\application\ports\spi\PatientRepositoryInterface;
@@ -94,4 +96,17 @@ return [
     AuthRepositoryInterface::class => function($container) {
         return new PDOAuthRepository($container->get('pdo_auth'));
     },
+    ServiceRDVInterface::class => function($container) {
+        return $container->get(ServiceRDV::class);
+    },
+
+    GetHistoriqueConsultationsAction::class => function ($container) {
+        return new GetHistoriqueConsultationsAction($container->get(ServiceRDVInterface::class));
+    },
+    \toubilib\api\middlewares\AuthnMiddleware::class => function($container) {
+        $settings = $container->get('settings')['jwt'];
+        return new \toubilib\api\middlewares\AuthnMiddleware($settings['key']);
+    },
+
+
 ];

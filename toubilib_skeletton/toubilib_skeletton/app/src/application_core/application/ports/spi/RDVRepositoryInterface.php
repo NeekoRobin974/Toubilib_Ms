@@ -13,5 +13,7 @@ Interface RDVRepositoryInterface
     public function getRDVById($id): ?RDV;
 
     public function getRendezVousByPraticien($praticienId, $dateDebut, $dateFin): array;
+    public function getConsultationsHonorees(string $patientId): array;
+
 
 }

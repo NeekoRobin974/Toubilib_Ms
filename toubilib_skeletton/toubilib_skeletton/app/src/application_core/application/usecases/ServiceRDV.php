@@ -90,4 +90,9 @@ class ServiceRDV implements ServiceRDVInterface
         }
         $this->rdvRepository->annulerRendezVous($id);
     }
+    public function getHistoriqueConsultations(string $patientId): array
+    {
+        return $this->rdvRepository->getConsultationsHonorees($patientId);
+    }
+
 }

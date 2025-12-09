@@ -10,4 +10,7 @@ Interface ServiceRDVInterface{
     public function creerRendezVous(InputRendezVousDTO $dto): void;
     public function getAgendaPraticien($praticienId, $dateDebut = null, $dateFin = null): array;
     public function annulerRendezVous($id): void;
+    public function getHistoriqueConsultations(string $patientId): array;
+
+
 }
