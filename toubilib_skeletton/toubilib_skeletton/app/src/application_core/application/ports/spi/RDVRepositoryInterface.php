@@ -14,4 +14,5 @@ Interface RDVRepositoryInterface
 
     public function getRendezVousByPraticien($praticienId, $dateDebut, $dateFin): array;
 
+    public function changerStatusRDV(string $id, int $status): void;
 }

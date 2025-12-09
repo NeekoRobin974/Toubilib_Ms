@@ -7,6 +7,7 @@ use toubilib\api\actions\getAllPraticiensAction;
 use toubilib\api\actions\getPatientDetailsAction;
 use toubilib\api\actions\getPraticienDetailsAction;
 use toubilib\api\actions\getRDVAction;
+use toubilib\api\actions\changerStatusRDVAction;
 use toubilib\api\provider\AuthnProviderInterface;
 use toubilib\core\application\ports\api\ServiceUserInterface;
 use toubilib\core\application\ports\spi\AuthRepositoryInterface;
@@ -93,5 +94,8 @@ return [
     },
     AuthRepositoryInterface::class => function($container) {
         return new PDOAuthRepository($container->get('pdo_auth'));
+    },
+    changerStatusRDVAction::class => function($container) {
+        return new changerStatusRDVAction($container->get(RDVRepositoryInterface::class));
     },
 ];

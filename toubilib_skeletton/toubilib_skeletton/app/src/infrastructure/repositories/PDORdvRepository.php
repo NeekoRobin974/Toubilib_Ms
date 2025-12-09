@@ -91,4 +91,12 @@ class PDORdvRepository implements RDVRepositoryInterface
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
     }
+
+    public function changerStatusRDV(string $id, int $status): void {
+        $stmt = $this->pdo->prepare('UPDATE rdv SET status = :status WHERE id = :id');
+        $stmt->execute([
+            'id' => $id,
+            'status' => $status
+        ]);
+    }
 }
