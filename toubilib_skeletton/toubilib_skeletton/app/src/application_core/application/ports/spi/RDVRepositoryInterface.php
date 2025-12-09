@@ -16,4 +16,5 @@ Interface RDVRepositoryInterface
     public function getConsultationsHonorees(string $patientId): array;
 
 
+    public function changerStatusRDV(string $id, int $status): void;
 }

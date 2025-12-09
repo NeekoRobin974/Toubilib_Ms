@@ -17,6 +17,7 @@ Toubilib est une application web permettant la gestion de rendez-vous médicaux 
 - 7)Affichage de l'agenda d'un praticien
 - 8)S'authentifier en tant que patient ou praticien
 - 9)Lister/rechercher un praticien en fonction d’une spécialité et/ou d’une ville d’exercice
+- 10)Gestion du cycle de vie des RDV, on peut changer le status du RDV (0 = à venir, 1 = honoré, 2 = non honoré)
 - 12)S'inscrire en tant que patient ou praticien
 
 ## Liens utiles pour les tests
@@ -56,6 +57,16 @@ Toubilib est une application web permettant la gestion de rendez-vous médicaux 
       }
       ```
     - Si les infos sont correctes, on obtient un 200 OK avec un token JWT dans le body retourné.
+
+### Gestion des cycles de vie des RDVs
+- **Changer le statut d'un RDV (à faire sur Postman)** : POST [http://localhost:6080/rdvs/4a51b40a-4deb-36c1-86e9-0406ffdfa49d/status](http://localhost:6080/rdvs/4a51b40a-4deb-36c1-86e9-0406ffdfa49d/status)
+    - Body (JSON) :
+      ```json
+      {
+          "status": 2
+      }
+      ```
+    - Si les infos sont correctes, on obtient un 200 OK avec un message.
 
 ## Remarques
 - Les identifiants de test sont à créer via la route d'inscription.

@@ -4,6 +4,7 @@ declare(strict_types=1);
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use toubilib\api\actions\annulerRDVAction;
+use toubilib\api\actions\changerStatusRDVAction;
 use toubilib\api\actions\getAllPraticiensAction;
 use toubilib\api\actions\getAgendaPraticienAction;
 use toubilib\api\actions\GetHistoriqueConsultationsAction;
@@ -41,6 +42,7 @@ return function( \Slim\App $app):\Slim\App {
         $action = new \toubilib\api\actions\SignUpAction($authProvider);
         return $action($request, $response, $args);
     });
+    $app->post('/rdvs/{id}/status', changerStatusRDVAction::class);
 
     return $app;
 };

@@ -91,6 +91,7 @@ class PDORdvRepository implements RDVRepositoryInterface
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
     }
+<<<<<<< HEAD
     public function getConsultationsHonorees(string $patientId): array
     {
         $stmt = $this->pdo->prepare(
@@ -103,4 +104,14 @@ class PDORdvRepository implements RDVRepositoryInterface
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+=======
+
+    public function changerStatusRDV(string $id, int $status): void {
+        $stmt = $this->pdo->prepare('UPDATE rdv SET status = :status WHERE id = :id');
+        $stmt->execute([
+            'id' => $id,
+            'status' => $status
+        ]);
+    }
+>>>>>>> da35fdca45ad333117e587f60c94486d22fcbb5b
 }

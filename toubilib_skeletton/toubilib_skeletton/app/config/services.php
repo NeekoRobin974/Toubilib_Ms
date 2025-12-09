@@ -8,6 +8,7 @@ use toubilib\api\actions\GetHistoriqueConsultationsAction;
 use toubilib\api\actions\getPatientDetailsAction;
 use toubilib\api\actions\getPraticienDetailsAction;
 use toubilib\api\actions\getRDVAction;
+use toubilib\api\actions\changerStatusRDVAction;
 use toubilib\api\provider\AuthnProviderInterface;
 use toubilib\core\application\ports\api\ServiceRDVInterface;
 use toubilib\core\application\ports\api\ServiceUserInterface;
@@ -109,4 +110,7 @@ return [
     },
 
 
+    changerStatusRDVAction::class => function($container) {
+        return new changerStatusRDVAction($container->get(RDVRepositoryInterface::class));
+    },
 ];
