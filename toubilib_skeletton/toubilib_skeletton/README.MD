@@ -72,3 +72,8 @@ Toubilib est une application web permettant la gestion de rendez-vous médicaux 
 - Les identifiants de test sont à créer via la route d'inscription.
 - Les rôles : 1 = patient, 10 = praticien.
 - Les identifiants UUID présents dans les liens sont des exemples présents dans la BD.
+
+## Ce qu'il manque
+On n'a pas mis de restrictions de rôles sur les actions, donc quelqu'un de non-authentifié peut faire toutes les actions.
+Le problème étant que l'application n'a pas de front, tout a été testé sur Postman, donc compliqué de tester avec des restrictions de rôles à cause des tokens JWT.
+Il manque la fonctionnalité 13.
