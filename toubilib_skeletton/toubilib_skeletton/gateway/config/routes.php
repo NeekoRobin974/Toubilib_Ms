@@ -2,10 +2,12 @@
 declare(strict_types=1);
 
 use Slim\App;
-use gateway\actions\GatewayAction;
+use gateway\actions\ListerPraticiensAction;
+use gateway\actions\ConsulterPraticienAction;
 
 return function (App $app): App {
-    $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', GatewayAction::class);
+    $app->get('/praticiens', ListerPraticiensAction::class);
+    $app->get('/praticiens/{id}', ConsulterPraticienAction::class);
 
     return $app;
 };
