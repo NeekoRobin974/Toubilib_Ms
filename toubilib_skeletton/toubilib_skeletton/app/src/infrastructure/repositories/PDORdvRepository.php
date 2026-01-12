@@ -58,40 +58,49 @@ class PDORdvRepository implements RDVRepositoryInterface
 
     public function getRendezVousByPraticien($praticienId, $dateDebut = null, $dateFin = null): array
     {
-        {
-            $sql = "SELECT id, date_heure_debut,date_heure_fin, duree, motif_visite, status, patient_id
+        $sql = "SELECT id, praticien_id, patient_id, date_heure_debut, date_heure_fin, duree, motif_visite, status
             FROM rdv
             WHERE praticien_id = :praticienId";
-            $params = ['praticienId' => $praticienId];
+        $params = ['praticienId' => $praticienId];
 
-            if ($dateDebut) {
-                $sql .= " AND DATE(date_heure_debut) >= :dateDebut";
-                $params['dateDebut'] = $dateDebut;
-            }
-            if ($dateFin) {
-                $sql .= " AND DATE(date_heure_fin) <= :dateFin";
-                $params['dateFin'] = $dateFin;
-            }
-            $sql .= " ORDER BY date_heure_debut ASC";
-
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute($params);
-            $rdvs = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            foreach ($rdvs as &$rdv) {
-                $rdv['details du patient'] = "http://localhost:6080/patients/" . $rdv['patient_id'];
-            }
-
-            return $rdvs;
+        if ($dateDebut) {
+            $sql .= " AND DATE(date_heure_debut) >= :dateDebut";
+            $params['dateDebut'] = $dateDebut;
         }
+        if ($dateFin) {
+            $sql .= " AND DATE(date_heure_fin) <= :dateFin";
+            $params['dateFin'] = $dateFin;
+        }
+        $sql .= " ORDER BY date_heure_debut ASC";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $rdvs = [];
+        foreach ($rows as $row) {
+            $rdv = new RDV(
+                $row['praticien_id'],
+                $row['patient_id'],
+                $row['date_heure_debut'],
+                $row['date_heure_fin'],
+                $row['motif_visite'],
+                $row['duree'],
+                $row['status'] ?? 0
+            );
+            $rdv->id = $row['id'];
+            $rdvs[] = $rdv;
+        }
+
+        return $rdvs;
     }
+
 
     public function annulerRendezVous($id): void{
         $sql = "UPDATE rdv SET status = 1 WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
     }
-<<<<<<< HEAD
     public function getConsultationsHonorees(string $patientId): array
     {
         $stmt = $this->pdo->prepare(
@@ -103,15 +112,11 @@ class PDORdvRepository implements RDVRepositoryInterface
         $stmt->execute(['patient_id' => $patientId]);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
-
-=======
-
     public function changerStatusRDV(string $id, int $status): void {
         $stmt = $this->pdo->prepare('UPDATE rdv SET status = :status WHERE id = :id');
         $stmt->execute([
             'id' => $id,
             'status' => $status
         ]);
-    }
->>>>>>> da35fdca45ad333117e587f60c94486d22fcbb5b
+}
 }

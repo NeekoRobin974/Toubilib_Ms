@@ -9,6 +9,7 @@ use toubilib\api\actions\getPatientDetailsAction;
 use toubilib\api\actions\getPraticienDetailsAction;
 use toubilib\api\actions\getRDVAction;
 use toubilib\api\actions\changerStatusRDVAction;
+use toubilib\api\actions\getRDVByPraticienAction;
 use toubilib\api\provider\AuthnProviderInterface;
 use toubilib\core\application\ports\api\ServiceRDVInterface;
 use toubilib\core\application\ports\api\ServiceUserInterface;
@@ -73,6 +74,11 @@ return [
             $container->get(RDVRepositoryInterface::class),
             $container->get(PraticienRepositoryInterface::class),
             $container->get(PatientRepositoryInterface::class)
+        );
+    },
+    getRDVByPraticienAction::class => function($container) {
+        return new getRDVByPraticienAction(
+            $container->get(ServiceRDV::class)
         );
     },
     annulerRDVAction::class => function($container) {

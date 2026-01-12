@@ -9,5 +9,6 @@ use gateway\actions\ConsulterPraticienAction;
 return function (App $app): App {
     $app->any('/praticiens[/{id}[/{params:.*}]]', ProxyAction::class);
 
+
     return $app;
 };

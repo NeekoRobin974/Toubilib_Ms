@@ -4,6 +4,7 @@ namespace toubilib\core\domain\entities\rdv;
 
 class RDV
 {
+    public string $id;
     private string $id_prat;
     private string $id_pat;
     private string $date_heure_debut;

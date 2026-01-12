@@ -95,4 +95,9 @@ class ServiceRDV implements ServiceRDVInterface
         return $this->rdvRepository->getConsultationsHonorees($patientId);
     }
 
+    public function getRDVParPraticien(string $idPrat): array
+    {
+        return $this->rdvRepository->getRendezVousByPraticien($idPrat);
+    }
+
 }

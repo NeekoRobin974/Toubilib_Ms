@@ -8,6 +8,7 @@ use toubilib\api\actions\changerStatusRDVAction;
 use toubilib\api\actions\getAllPraticiensAction;
 use toubilib\api\actions\getAgendaPraticienAction;
 use toubilib\api\actions\GetHistoriqueConsultationsAction;
+use toubilib\api\actions\getRDVByPraticienAction;
 
 
 return function( \Slim\App $app):\Slim\App {
@@ -23,6 +24,7 @@ return function( \Slim\App $app):\Slim\App {
     $app->get('/praticiens/{id}', \toubilib\api\actions\getPraticienDetailsAction::class);
     $app->get('/rdvs/{id}', \toubilib\api\actions\getRDVAction::class);
     $app->post('/rdvs', \toubilib\api\actions\creerRDVAction::class);
+    $app->get('/praticiens/{id}/rdvs', getRDVByPraticienAction::class);
     $app->get('/praticien/{id}/agenda', getAgendaPraticienAction::class);
     $app->get('/praticien/{id}/{date_debut}/agenda', getAgendaPraticienAction::class);
     $app->get('/praticien/{id}/{date_debut}/{date_fin}/agenda', getAgendaPraticienAction::class);
