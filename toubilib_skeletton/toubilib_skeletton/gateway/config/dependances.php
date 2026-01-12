@@ -3,6 +3,7 @@
 use Psr\Container\ContainerInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Client;
+use gateway\middleware\CorsMiddleware;
 
 return [
     ClientInterface::class => function (ContainerInterface $c) {
