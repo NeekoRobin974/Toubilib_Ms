@@ -19,3 +19,5 @@ composer.lock
 /app/vendor/
 /app/config/.env
 /gateway/vendor/
+/app-praticiens/vendor/
+/app-praticiens/config/.env

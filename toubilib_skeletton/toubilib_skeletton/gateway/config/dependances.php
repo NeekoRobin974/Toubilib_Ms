@@ -21,7 +21,17 @@ return [
             $container->get(Client::class),
             $container->get('settings')['toubilib_api_url']
         );
-    }
-
+    },
+    'praticien.client' => function ($container) {
+        return new Client([
+            'base_uri' => $container->get('settings')['praticien_api_url'],
+            'timeout'  => 5.0,
+        ]);
+    },
+    \gateway\actions\ListerPraticiensAction::class => function ($container) {
+        return new \gateway\actions\ListerPraticiensAction($container->get('praticien.client'));
+    },
+    \gateway\actions\ConsulterPraticienAction::class => function ($container) {
+        return new \gateway\actions\ConsulterPraticienAction($container->get('praticien.client'));
+    },
 ];
-
