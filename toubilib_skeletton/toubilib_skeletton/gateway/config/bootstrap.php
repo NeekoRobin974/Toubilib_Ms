@@ -8,6 +8,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $builder = new ContainerBuilder();
 $builder->addDefinitions(__DIR__ . '/dependances.php');
+$builder->addDefinitions(__DIR__ . '/settings.php');
 $container = $builder->build();
 
 AppFactory::setContainer($container);
