@@ -28,6 +28,18 @@ return [
             'timeout'  => 5.0,
         ]);
     },
+    'rdv.client' => function ($container) {
+        return new Client([
+            'base_uri' => $container->get('settings')['rdv_api_url'],
+            'timeout'  => 5.0,
+        ]);
+    },
+    'RdvProxyAction' => function($container) {
+        return new ProxyAction(
+            $container->get('rdv.client'),
+            $container->get('settings')['rdv_api_url']
+        );
+    },
     \gateway\actions\ListerPraticiensAction::class => function ($container) {
         return new \gateway\actions\ListerPraticiensAction($container->get('praticien.client'));
     },
