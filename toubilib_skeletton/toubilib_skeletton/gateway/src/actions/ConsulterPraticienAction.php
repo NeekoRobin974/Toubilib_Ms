@@ -21,7 +21,10 @@ class ConsulterPraticienAction
         try {
             return $this->remote_praticien_service->request('GET', "praticiens/$id");
         } catch (ClientException $e) {
-            throw new \Slim\Exception\HttpNotFoundException($request, "ressource not found error praticiens/$id");
+            if ($e->getCode() === 404) {
+                throw new \Slim\Exception\HttpNotFoundException($request, "Le praticien d'id $id n'existe pas");
+            }
+            throw $e;
         }
     }
 }
