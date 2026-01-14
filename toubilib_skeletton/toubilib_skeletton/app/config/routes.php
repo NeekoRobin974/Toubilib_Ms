@@ -38,7 +38,7 @@ return function( \Slim\App $app):\Slim\App {
         $action = new \toubilib\api\actions\SigninAction($authProvider);
         return $action($request, $response, $args);
     });
-    $app->post('/auth/signup', function ($request, $response, $args) use ($app) {
+    $app->post('/auth/register', function ($request, $response, $args) use ($app) {
         $container = $app->getContainer();
         $authProvider = $container->get(\toubilib\api\provider\AuthnProviderInterface::class);
         $action = new \toubilib\api\actions\SignUpAction($authProvider);

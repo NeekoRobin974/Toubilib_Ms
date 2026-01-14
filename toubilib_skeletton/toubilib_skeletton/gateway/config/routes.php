@@ -8,7 +8,8 @@ use gateway\actions\ConsulterPraticienAction;
 
 return function (App $app): App {
     $app->any('/praticiens[/{id}[/{params:.*}]]', ProxyAction::class);
-    $app->any('/rdvs[/{id}[/{params:.*}]]', 'RdvProxyAction');
-
+    $app->any('/praticiens/{id}/rdvs', ProxyAction::class);
+    $app->any('/auth/register', ProxyAction::class);
+    $app->any('/auth/signin', ProxyAction::class);
     return $app;
 };
