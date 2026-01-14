@@ -23,3 +23,5 @@ composer.lock
 /app-praticiens/config/.env
 /app-rdv/vendor/
 /app-rdv/config/.env
+/app-auth/vendor/
+/app-auth/config/.env
