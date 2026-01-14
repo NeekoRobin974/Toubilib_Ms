@@ -34,10 +34,22 @@ return [
             'timeout'  => 5.0,
         ]);
     },
+    'auth.client' => function ($container) {
+        return new Client([
+            'base_uri' => $container->get('settings')['auth_api_url'],
+            'timeout'  => 5.0,
+        ]);
+    },
     'RdvProxyAction' => function($container) {
         return new ProxyAction(
             $container->get('rdv.client'),
             $container->get('settings')['rdv_api_url']
+        );
+    },
+    'AuthProxyAction' => function($container) {
+        return new ProxyAction(
+            $container->get('auth.client'),
+            $container->get('settings')['auth_api_url']
         );
     },
     \gateway\actions\ListerPraticiensAction::class => function ($container) {

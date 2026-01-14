@@ -36,6 +36,7 @@ class SigninAction {
             //rep a renvoyer
             $res = [
                 'token' => $authDTO->accesToken,
+                'refresh_token' => $authDTO->refreshToken,
                 'profile' => $profile
             ];
 

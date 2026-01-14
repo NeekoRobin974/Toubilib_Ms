@@ -9,4 +9,5 @@ use toubilib\core\application\ports\api\dtos\ProfilDTO;
 interface AuthnProviderInterface {
     public function register(CredentialsDTO $credentials): ProfilDTO;
     public function signin(CredentialsDTO $credentials): array;
+    public function refresh(string $token): array;
 }

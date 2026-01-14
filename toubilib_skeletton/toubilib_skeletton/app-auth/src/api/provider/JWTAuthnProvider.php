@@ -18,8 +18,7 @@ class JWTAuthnProvider implements AuthnProviderInterface{
     }
 
     //authentifie l'utilisateur et génère les tokens jwt
-    public function signin(CredentialsDTO $credentials): array
-    {
+    public function signin(CredentialsDTO $credentials): array{
         //recherche l'utilisateur par ses id
         $user = $this->serviceUser->byCredentials($credentials);
         //prépare le payload (le tableau avec les données du token + infos utilisateur) du token jwt
@@ -42,10 +41,34 @@ class JWTAuthnProvider implements AuthnProviderInterface{
     }
 
     //inscrit un nouvel utilisateur et retourne son profil
-    public function register(CredentialsDTO $credentials): ProfilDTO
-    {
+    public function register(CredentialsDTO $credentials): ProfilDTO{
         //crée l'utilisateur via le service
         $user = $this->serviceUser->register($credentials);
         return new ProfilDTO($user->id, $user->email, $user->role);
+    }
+
+    public function refresh(string $token): array{
+        try {
+            //décode le token
+            $payload = $this->JWTManager->decodeToken($token);
+
+            //vérifie que c'est un token de rafraîchissement
+            if (!isset($payload['type']) || $payload['type'] !== 'refresh') {
+                throw new \Exception("Token invalide (ce n'est pas un token de rafraîchissement)");
+            }
+
+            //crée les nouveaux tokens
+            //on met à jour les dates
+            $payload['iat'] = time();
+            $payload['exp'] = time()+3600;
+
+            $accessToken  = $this->JWTManager->createAccesToken($payload);
+            $refreshToken = $this->JWTManager->createRefreshToken($payload);
+
+            return [new AuthDTO($accessToken, $refreshToken)];
+
+        } catch (\Exception $e) {
+            throw new \Exception("Erreur lors du rafraîchissement token : " . $e->getMessage());
+        }
     }
 }
