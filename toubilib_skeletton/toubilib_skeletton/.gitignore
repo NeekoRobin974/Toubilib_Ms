@@ -16,8 +16,8 @@ cache.properties
 # Composer
 composer.phar
 composer.lock
-/app/vendor/
-/app/config/.env
+/app-patient/vendor/
+/app-patient/config/.env
 /gateway/vendor/
 /app-praticiens/vendor/
 /app-praticiens/config/.env

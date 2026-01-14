@@ -65,6 +65,21 @@ services:
       - toubiauth.db
     command: sh -c "composer install && php -S 0.0.0.0:80 -t /var/php/public"
 
+  api.patients:
+    build:
+      context: build
+      dockerfile: 8.4-cli.Dockerfile
+    ports:
+      - '6085:80'
+    volumes:
+      - ./app-rdv:/var/php
+    working_dir: /var/php
+    networks:
+      - toubilib.net
+    depends_on:
+      - toubipat.db
+    command: sh -c "composer install && php -S 0.0.0.0:80 -t /var/php/public"
+
   gateway.toubilib:
     build:
       context: build
