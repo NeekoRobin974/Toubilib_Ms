@@ -71,4 +71,23 @@ class JWTAuthnProvider implements AuthnProviderInterface{
             throw new \Exception("Erreur lors du rafraîchissement token : " . $e->getMessage());
         }
     }
+
+    public function validateToken(string $token): array
+    {
+        try {
+            $payload = $this->JWTManager->decodeToken($token);
+        } catch (\Exception $e) {
+            throw new \Exception('Token invalide : ' . $e->getMessage());
+        }
+
+        if (!is_array($payload)) {
+            throw new \Exception('Payload du token invalide');
+        }
+
+        if (isset($payload['exp']) && (int)$payload['exp'] < time()) {
+            throw new \Exception('Token expiré');
+        }
+        return $payload;
+    }
+
 }

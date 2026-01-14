@@ -1,7 +1,10 @@
 <?php
 declare(strict_types=1);
 
-return function( \Slim\App $app):\Slim\App {
+use toubilib\api\actions\ValidateTokenAction;
+use toubilib\api\provider\JWTAuthnProvider;
+
+return function(\Slim\App $app):\Slim\App {
     $app->post('/auth/signin', function ($request, $response, $args) use ($app) {
         $container = $app->getContainer();
         $authProvider = $container->get(\toubilib\api\provider\AuthnProviderInterface::class);
@@ -18,6 +21,12 @@ return function( \Slim\App $app):\Slim\App {
         $container = $app->getContainer();
         $authProvider = $container->get(\toubilib\api\provider\AuthnProviderInterface::class);
         $action = new \toubilib\api\actions\RefreshAction($authProvider);
+        return $action($request, $response, $args);
+    });
+    $app->post('/tokens/validate', function ($request, $response, $args) use ($app) {
+        $container = $app->getContainer();
+        $jwtProvider = $container->get(JWTAuthnProvider::class);
+        $action = new ValidateTokenAction($jwtProvider);
         return $action($request, $response, $args);
     });
 
