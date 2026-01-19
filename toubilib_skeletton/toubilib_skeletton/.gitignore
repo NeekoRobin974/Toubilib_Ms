@@ -25,3 +25,4 @@ composer.lock
 /app-rdv/config/.env
 /app-auth/vendor/
 /app-auth/config/.env
+rabbitmq.toubi/
