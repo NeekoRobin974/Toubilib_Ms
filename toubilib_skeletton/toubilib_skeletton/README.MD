@@ -1,11 +1,11 @@
-# Toubilib
+# Toubilib Micro Services
 
 Cadet Mattéo  
 Dieudonné Quentin  
 DWM1
 
 ## Présentation
-Toubilib est une application web permettant la gestion de rendez-vous médicaux entre patients et praticiens. Elle propose des fonctionnalités d'inscription, d'authentification, de gestion des praticiens, de consultation et de réservation de créneaux, ainsi que la gestion des rendez-vous.
+L'application Toubilib mais divisé en micro services.
 
 ## Fonctionnalités réalisées
 - 1)Affichage de la liste des praticiens
@@ -23,9 +23,9 @@ Toubilib est une application web permettant la gestion de rendez-vous médicaux 
 ## Liens utiles pour les tests
 
 - **Accès aux bases de données** : [http://localhost:8080](http://localhost:8080)
-- **Liste des praticiens** : [http://localhost:6080/praticiens](http://localhost:6080/praticiens)
-- **Détail d'un praticien** : [http://localhost:6080/praticiens/4305f5e9-be5a-4ccf-8792-7e07d7017363](http://localhost:6080/praticiens/4305f5e9-be5a-4ccf-8792-7e07d7017363)
-- **Liste créneaux sur une période** : [http://localhost:6080/praticiens/4305f5e9-be5a-4ccf-8792-7e07d7017363/creneaux?date_debut=2025-12-01&date_fin=2025-12-07](http://localhost:6080/praticiens/4305f5e9-be5a-4ccf-8792-7e07d7017363/creneaux?date_debut=2025-12-01&date_fin=2025-12-07)
+- **Liste des praticiens** : [http://localhost:6082/praticiens](http://localhost:6080/praticiens)
+- **Détail d'un praticien** : [http://localhost:6082/praticiens/4305f5e9-be5a-4ccf-8792-7e07d7017363](http://localhost:6080/praticiens/4305f5e9-be5a-4ccf-8792-7e07d7017363)
+- **Liste créneaux sur une période** : [http://localhost:6082/praticiens/4305f5e9-be5a-4ccf-8792-7e07d7017363/creneaux?date_debut=2025-12-01&date_fin=2025-12-07](http://localhost:6080/praticiens/4305f5e9-be5a-4ccf-8792-7e07d7017363/creneaux?date_debut=2025-12-01&date_fin=2025-12-07)
 - **Consulter un RDV** : [http://localhost:6080/rdvs/2e1a7275-2593-3c04-9a4c-4e7cbada9541](http://localhost:6080/rdvs/2e1a7275-2593-3c04-9a4c-4e7cbada9541)
 - **Consulter l'agenda d'un praticien** : [http://localhost:6080/praticien/4305f5e9-be5a-4ccf-8792-7e07d7017363/agenda](http://localhost:6080/praticien/4305f5e9-be5a-4ccf-8792-7e07d7017363/agenda)
 - **Consulter l'agenda d'un praticien après une date précise** : [http://localhost:6080/praticien/4305f5e9-be5a-4ccf-8792-7e07d7017363/2025-12-03/agenda](http://localhost:6080/praticien/4305f5e9-be5a-4ccf-8792-7e07d7017363/2025-12-03/agenda)

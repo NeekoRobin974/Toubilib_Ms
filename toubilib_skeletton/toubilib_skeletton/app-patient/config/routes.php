@@ -9,7 +9,7 @@ use toubilib\api\actions\GetHistoriqueConsultationsAction;
 return function( \Slim\App $app):\Slim\App {
 
 
-    $app->add(new \toubilib\api\middlewares\CorsMiddleware());
+    //$app->add(new \toubilib\api\middlewares\CorsMiddleware());
     $app->options('/{routes:.+}', function (Request $rq, Response $rs, array $args) : Response {
         return $rs;
     });

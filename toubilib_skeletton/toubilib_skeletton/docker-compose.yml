@@ -75,7 +75,7 @@ services:
     ports:
       - '6085:80'
     volumes:
-      - ./app-patients:/var/php
+      - ./app-patient:/var/php
     working_dir: /var/php
     networks:
       - toubilib.net

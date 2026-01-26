@@ -21,6 +21,7 @@ use toubilib\core\application\usecases\ServiceUser;
 use toubilib\infra\repositories\PDOAuthRepository;
 use toubilib\infra\repositories\PDOPraticienRepository;
 use toubilib\infra\repositories\PDORdvRepository;
+use toubilib\infra\repositories\HttpRDVRepository;
 
 return [
     'pdo' => function($container) {
@@ -30,8 +31,14 @@ return [
     PraticienRepositoryInterface::class => function($container) {
         return new PDOPraticienRepository($container->get('pdo'));
     },
+    RDVRepositoryInterface::class => function($container) {
+        return new HttpRDVRepository();
+    },
     getAllPraticiensAction::class => function($container) {
         return new getAllPraticiensAction($container->get(PraticienRepositoryInterface::class));
+    },
+    getPraticienDetailsAction::class => function($container) {
+        return new getPraticienDetailsAction($container->get(PraticienRepositoryInterface::class));
     },
     \toubilib\api\actions\getCreneauxAction::class => function($container) {
         return new \toubilib\api\actions\getCreneauxAction($container->get(RDVRepositoryInterface::class));
