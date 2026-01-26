@@ -190,3 +190,20 @@ services:
     ports:
       - '1080:1080'
       - '1025:1025'
+
+  mail.consumer:
+    build:
+      context: build
+      dockerfile: 8.4-cli.Dockerfile
+    volumes:
+      - ./app-auth:/var/php
+    working_dir: /var/php
+    networks:
+      - toubilib.net
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      mail.toubi:
+        condition: service_started
+    command: sh -c "composer install && php src/infrastructure/messaging/NotificationConsumer.php"
+    restart: unless-stopped
