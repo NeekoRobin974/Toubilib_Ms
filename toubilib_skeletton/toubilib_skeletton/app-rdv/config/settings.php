@@ -7,6 +7,7 @@ return [
             'password' => 'toubirdv'
         ],
         'praticien_api_url' => 'http://api.praticiens',
+        'patient_api_url' => 'http://api.patients',
         'displayErrorDetails' => true,
     ],
 ];

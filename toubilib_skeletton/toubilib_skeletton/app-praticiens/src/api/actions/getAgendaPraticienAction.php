@@ -10,8 +10,9 @@ class getAgendaPraticienAction {
 
     public function __invoke($request, $response, $args) {
         $praticienId = $args['id'];
-        $dateDebut = $args['date_debut'] ?? null;
-        $dateFin = $args['date_fin'] ?? null;
+        $queryParams = $request->getQueryParams();
+        $dateDebut = $queryParams['date_debut'] ?? null;
+        $dateFin = $queryParams['date_fin'] ?? null;
 
         $agenda = $this->service->getAgendaPraticien($praticienId, $dateDebut, $dateFin);
         $response->getBody()->write(json_encode($agenda));

@@ -22,6 +22,7 @@ use toubilib\infra\repositories\PDOAuthRepository;
 use toubilib\infra\repositories\PDOPraticienRepository;
 use toubilib\infra\repositories\PDORdvRepository;
 use toubilib\infra\repositories\HttpRDVRepository;
+use toubilib\infra\repositories\HttpPatientRepository;
 
 return [
     'pdo' => function($container) {
@@ -33,6 +34,16 @@ return [
     },
     RDVRepositoryInterface::class => function($container) {
         return new HttpRDVRepository();
+    },
+    PatientRepositoryInterface::class => function($container) {
+        return new HttpPatientRepository();
+    },
+    ServiceRDV::class => function($container) {
+        return new ServiceRDV(
+            $container->get(RDVRepositoryInterface::class),
+            $container->get(PraticienRepositoryInterface::class),
+            $container->get(PatientRepositoryInterface::class)
+        );
     },
     getAllPraticiensAction::class => function($container) {
         return new getAllPraticiensAction($container->get(PraticienRepositoryInterface::class));

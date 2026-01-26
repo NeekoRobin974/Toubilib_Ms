@@ -83,10 +83,10 @@ class PDORdvRepository implements RDVRepositoryInterface
                 $row['praticien_id'],
                 $row['patient_id'],
                 $row['date_heure_debut'],
-                $row['date_heure_fin'],
-                $row['motif_visite'],
-                $row['duree'],
-                $row['status'] ?? 0
+                (string)($row['date_heure_fin'] ?? ''),
+                (string)($row['motif_visite'] ?? ''),
+                (int)$row['duree'],
+                (int)($row['status'] ?? 0)
             );
             $rdv->id = $row['id'];
             $rdvs[] = $rdv;

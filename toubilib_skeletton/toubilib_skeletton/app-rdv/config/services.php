@@ -13,6 +13,7 @@ use toubilib\core\application\ports\spi\RDVRepositoryInterface;
 use toubilib\core\application\usecases\ServiceRDV;
 use toubilib\infra\repositories\PDORdvRepository;
 use toubilib\infra\repositories\HttpPraticienRepository;
+use toubilib\infra\repositories\HttpPatientRepository;
 use GuzzleHttp\Client;
 
 return [
@@ -28,8 +29,15 @@ return [
         $settings = $container->get('settings');
         return new Client(['base_uri' => $settings['praticien_api_url']]);
     },
+    'patient.client' => function($container) {
+        $settings = $container->get('settings');
+        return new Client(['base_uri' => $settings['patient_api_url']]);
+    },
     PraticienRepositoryInterface::class => function($container) {
         return new HttpPraticienRepository($container->get('praticien.client'));
+    },
+    PatientRepositoryInterface::class => function($container) {
+        return new HttpPatientRepository($container->get('patient.client'));
     },
     RDVRepositoryInterface::class => function($container) {
         return new PDORdvRepository($container->get('pdo_rdv'));

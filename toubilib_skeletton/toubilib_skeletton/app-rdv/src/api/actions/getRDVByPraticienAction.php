@@ -50,8 +50,13 @@ class getRDVByPraticienAction extends AbstractAction
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(200);
 
-        } catch (\Exception $e) {
-            $response->getBody()->write(json_encode(['error' => $e->getMessage()]));
+        } catch (\Throwable $e) {
+            $response->getBody()->write(json_encode([
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(500);

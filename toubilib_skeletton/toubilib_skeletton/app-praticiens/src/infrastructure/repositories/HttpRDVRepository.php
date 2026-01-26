@@ -18,15 +18,19 @@ class HttpRDVRepository implements RDVRepositoryInterface {
     public function listerCreneaux($praticienId, $dateDebut, $dateFin): array {
         try {
             $response = $this->client->get("/praticiens/{$praticienId}/rdvs");
-            $rdvs = json_decode($response->getBody()->getContents(), true);
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            $rdvs = $data['rendez_vous'] ?? [];
 
             $filtered = [];
             foreach ($rdvs as $rdv) {
-                // Ensure array keys exist and filter by date
                 if (isset($rdv['date_heure_debut'])) {
                     $start = $rdv['date_heure_debut'];
-                    // Basic string comparison for dates YYYY-MM-DD
-                    if ($start >= $dateDebut && $start <= $dateFin) {
+
+                    $matchesStart = $dateDebut === null || $start >= $dateDebut;
+                    $matchesEnd = $dateFin === null || $start <= $dateFin;
+
+                    if ($matchesStart && $matchesEnd) {
                         $filtered[] = $rdv;
                     }
                 }
@@ -38,14 +42,14 @@ class HttpRDVRepository implements RDVRepositoryInterface {
     }
 
     public function creerRendezVous(RDV $rdv): void {
-        // Not implemented
+        //pas dans ce micro service
     }
 
     public function getRDVById($id): ?RDV {
         return null;
     }
 
-    public function getRendezVousByPraticien($praticienId, $dateDebut, $dateFin): array {
+    public function getRendezVousByPraticien($praticienId, $dateDebut = null, $dateFin = null): array {
         return $this->listerCreneaux($praticienId, $dateDebut, $dateFin);
     }
 
@@ -54,6 +58,6 @@ class HttpRDVRepository implements RDVRepositoryInterface {
     }
 
     public function changerStatusRDV(string $id, int $status): void {
-        // Not implemented
+        //pas dans ce micro service
     }
 }
