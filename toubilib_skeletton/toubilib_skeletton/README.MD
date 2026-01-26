@@ -30,9 +30,9 @@ L'application Toubilib mais divisé en micro services.
 - **Consulter l'agenda d'un praticien** : [http://localhost:6082/praticien/4305f5e9-be5a-4ccf-8792-7e07d7017363/agenda](http://localhost:6080/praticien/4305f5e9-be5a-4ccf-8792-7e07d7017363/agenda)
 - **Consulter l'agenda d'un praticien après une date précise** : [http://localhost:6082/praticien/4305f5e9-be5a-4ccf-8792-7e07d7017363/2025-12-03/agenda](http://localhost:6080/praticien/4305f5e9-be5a-4ccf-8792-7e07d7017363/2025-12-03/agenda)
 - **Consulter l'agenda d'un praticien entre deux dates** : [http://localhost:6082/praticien/4305f5e9-be5a-4ccf-8792-7e07d7017363/2025-12-01/2025-12-03/agenda](http://localhost:6080/praticien/4305f5e9-be5a-4ccf-8792-7e07d7017363/2025-12-01/2025-12-03/agenda)
-- **Annuler un RDV (à faire sur Postman)** : [http://localhost:6080/rdvs/2e1a7275-2593-3c04-9a4c-4e7cbada9541/annuler](http://localhost:6080/rdvs/2e1a7275-2593-3c04-9a4c-4e7cbada9541/annuler)
-- **Liste des praticiens qui ont la spécialité "pédiatrie"** : [http://localhost:6080/praticiens?specialite=pédiatrie](http://localhost:6080/praticiens?specialite=pédiatrie)
-- **Liste des praticiens qui exercent à Nancy** : [http://localhost:6080/praticiens?ville=Nancy](http://localhost:6080/praticiens?ville=Nancy)
+- **Annuler un RDV (à faire sur Postman)** : [http://localhost:6083/rdvs/2e1a7275-2593-3c04-9a4c-4e7cbada9541/annuler](http://localhost:6080/rdvs/2e1a7275-2593-3c04-9a4c-4e7cbada9541/annuler)
+- **Liste des praticiens qui ont la spécialité "pédiatrie"** : [http://localhost:6082/praticiens?specialite=pédiatrie](http://localhost:6080/praticiens?specialite=pédiatrie)
+- **Liste des praticiens qui exercent à Nancy** : [http://localhost:6082/praticiens?ville=Nancy](http://localhost:6080/praticiens?ville=Nancy)
 
 ### Authentification et inscription
 
@@ -72,8 +72,3 @@ L'application Toubilib mais divisé en micro services.
 - Les identifiants de test sont à créer via la route d'inscription.
 - Les rôles : 1 = patient, 10 = praticien.
 - Les identifiants UUID présents dans les liens sont des exemples présents dans la BD.
-
-## Ce qu'il manque
-On n'a pas mis de restrictions de rôles sur les actions, donc quelqu'un de non-authentifié peut faire toutes les actions.
-Le problème étant que l'application n'a pas de front, tout a été testé sur Postman, donc compliqué de tester avec des restrictions de rôles à cause des tokens JWT.
-Il manque la fonctionnalité 13.
