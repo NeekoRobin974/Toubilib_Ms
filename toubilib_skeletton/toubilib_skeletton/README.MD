@@ -36,7 +36,7 @@ L'application Toubilib mais divisé en micro services.
 
 ### Authentification et inscription
 
-- **Inscription** : POST [http://localhost:6080/auth/signup](http://localhost:6080/auth/signup)
+- **Inscription** : POST [http://localhost:6084/auth/register](http://localhost:6080/auth/signup)
     - Body (JSON) :
       ```json
       {
@@ -47,7 +47,7 @@ L'application Toubilib mais divisé en micro services.
       ```
     - Si les infos sont correctes, on obtient un 201 Created avec le body retourné.
 
-- **Connexion** : POST [http://localhost:6080/auth/signin](http://localhost:6080/auth/signin)
+- **Connexion** : POST [http://localhost:6084/auth/signin](http://localhost:6080/auth/signin)
     - Body (JSON) :
       ```json
       {
@@ -58,8 +58,14 @@ L'application Toubilib mais divisé en micro services.
       ```
     - Si les infos sont correctes, on obtient un 200 OK avec un token JWT dans le body retourné.
 
+- **Refresh** : POST [http://localhost:6084/auth/refresh](http://localhost:6080/auth/signin)
+    - Il faut d'abord récupérer le refresh token renvoyé lors de la connexion.
+    - Body (JSON) : le vider.
+    - Sur Postman, aller dans Authorization, choisir Bearer Token et coller le refresh token.
+    - Si les infos sont correctes, on obtient un 200 OK avec le nouveau token.
+
 ### Gestion des cycles de vie des RDVs
-- **Changer le statut d'un RDV (à faire sur Postman)** : POST [http://localhost:6080/rdvs/4a51b40a-4deb-36c1-86e9-0406ffdfa49d/status](http://localhost:6080/rdvs/4a51b40a-4deb-36c1-86e9-0406ffdfa49d/status)
+- **Changer le statut d'un RDV (à faire sur Postman)** : POST [http://localhost:6083/rdvs/4a51b40a-4deb-36c1-86e9-0406ffdfa49d/status](http://localhost:6080/rdvs/4a51b40a-4deb-36c1-86e9-0406ffdfa49d/status)
     - Body (JSON) :
       ```json
       {
